@@ -24,7 +24,7 @@ module MIPS_tb;
     reg clk;
     reg rst;
     
-    processor mips(
+    mips_top mips(
         .clk(clk),
         .rst(rst));
         

@@ -11,6 +11,7 @@ module register_file(
 
 reg [31:0] registers[31:0];
 
+// Initialize registers to 0
 integer i;
 initial 
    for (i = 0; i < 32; i = i + 1)
@@ -18,8 +19,8 @@ initial
        registers[i] = 32'b0;
    end
 
-assign read_data1 = registers[reg1_address]; //Verilog might allow or not
-assign read_data2 = registers[reg2_address]; //Verilog might allow or not
+assign read_data1 = registers[reg1_address]; 
+assign read_data2 = registers[reg2_address]; 
 
 always@(posedge clk)
 begin

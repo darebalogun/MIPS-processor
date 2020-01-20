@@ -1,5 +1,3 @@
-`define ADDI 6'b001000
-`define J 6'b000010 
 
 module mips_top(
     input clk,

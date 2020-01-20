@@ -1,5 +1,4 @@
 `include "mips_isa.v"
-
 module control(
     input [5:0] instruction,
     input [5:0] funct,

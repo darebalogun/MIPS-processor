@@ -55,6 +55,18 @@ always @(*)
                     endcase
                 end
             
+            `J:
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b0;
+                    regWrite =  1'b0;
+                    ALUop =     3'b111;
+                    jump =      1'b1;
+                end
             // I-Type
             6'b00100X:  // ADD
                 begin

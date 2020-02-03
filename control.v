@@ -20,12 +20,14 @@ always @(*)
             `R_TYPE:    
                 begin
                     reg_dst =   1'b1;
+                    jump =      1'b0;
                     branch =    1'b0;
                     memRead =   1'b0;
                     mem2Reg =   1'b0;
                     memWrite =  1'b0;
                     ALUsrc =    1'b0;
                     regWrite =  1'b1;
+                    signXtend = (funct[0]) ? 1'b0 : 1'b1;
                     
                     casex(funct)
                         6'b10000X:  // ADD
@@ -58,19 +60,22 @@ always @(*)
             `J:
                 begin
                     reg_dst =   1'b0;
+                    jump =      1'b1;
                     branch =    1'b0;
                     memRead =   1'b0;
                     mem2Reg =   1'b0;
                     memWrite =  1'b0;
                     ALUsrc =    1'b0;
                     regWrite =  1'b0;
-                    ALUop =     3'b111;
-                    jump =      1'b1;
+                    ALUop =     3'b111;  
+                    signXtend = 1'b0;       
                 end
+                
             // I-Type
             6'b00100X:  // ADD
                 begin
                     reg_dst =   1'b0;
+                    jump =      1'b0;
                     branch =    1'b0;
                     memRead =   1'b0;
                     mem2Reg =   1'b0;
@@ -78,11 +83,13 @@ always @(*)
                     ALUsrc =    1'b1;
                     regWrite =  1'b1;
                     ALUop =     3'b000;
+                    signXtend = (instruction[0]) ? 1'b0 : 1'b1;
                 end
                 
             6'b00101X:  // Comparisons
                 begin
                     reg_dst =   1'b0;
+                    jump =      1'b0;   
                     branch =    1'b0;
                     memRead =   1'b0;
                     mem2Reg =   1'b0;
@@ -90,6 +97,7 @@ always @(*)
                     ALUsrc =    1'b1;
                     regWrite =  1'b1;
                     ALUop =     3'b010;
+                    signXtend = (instruction[0]) ? 1'b0 : 1'b1;
                 end
                 
             6'b0011XX:  // Logic

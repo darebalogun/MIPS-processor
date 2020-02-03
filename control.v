@@ -3,25 +3,150 @@ module control(
     input [5:0] instruction,
     input [5:0] funct,
     input zero,
-    output reg_dst,
-    output jump,
-    output branch,
-    output memRead,
-    output mem2Reg,
-    output[5:0] ALUop,
-    output memWrite,
-    output ALUsrc,
-    output regWrite);
+    output reg reg_dst,
+    output reg jump,
+    output reg branch,
+    output reg memRead,
+    output reg mem2Reg,
+    output reg [2:0] ALUop,
+    output reg memWrite,
+    output reg ALUsrc,
+    output reg regWrite,
+    output reg signXtend);
 
-
-assign reg_dst = (instruction == `ADDI) ? 1'b0 : 1'b1;    
-
-assign jump = (instruction == `J) ? 1'b1 : 1'b0;
-
-assign regWrite = (instruction == `ADDI) ? 1'b1 : 1'b0;
-
-assign ALUop = instruction;
-
-assign ALUsrc = (instruction == `ADDI) ? 1'b1 : 1'b0;
+always @(*)
+    begin
+        casex(instruction)
+            `R_TYPE:    
+                begin
+                    reg_dst =   1'b1;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b0;
+                    regWrite =  1'b1;
+                    
+                    casex(funct)
+                        6'b10000X:  // ADD
+                            ALUop =     3'b000;
+                        6'b10001X:  // SUB
+                            ALUop =     3'b001;
+                        6'b000XXX:  // Shift
+                            ALUop =     3'b010;
+                        6'b1010XX:   // compare and shift
+                            ALUop =     3'b010;
+                        6'b100100:   // AND
+                            ALUop =     3'b011;
+                        6'b100101:   //  OR
+                            ALUop =     3'b100;
+                        6'b100110:   // XOR
+                            ALUop =     3'b101;
+                        6'b100111:   // NOR
+                            ALUop =     3'b110;                     
+                        6'b001XXX:  // Jump
+                            jump =      1'b1;
+                            
+                        default:
+                            begin
+                                ALUop = 3'b111;
+                                jump =  1'b0;
+                            end
+                    endcase
+                end
+            
+            // I-Type
+            6'b00100X:  // ADD
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b1;
+                    regWrite =  1'b1;
+                    ALUop =     3'b000;
+                end
+                
+            6'b00101X:  // Comparisons
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b1;
+                    regWrite =  1'b1;
+                    ALUop =     3'b010;
+                end
+                
+            6'b0011XX:  // Logic
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b1;
+                    regWrite =  1'b1;
+                    
+                    casex(instruction)
+                        6'b001100:  // AND
+                            begin
+                                ALUop =     3'b011;
+                            end
+                        6'b001101:  // OR
+                            begin
+                                ALUop =     3'b100;
+                            end
+                        6'b001110:  // XOR
+                            begin
+                                ALUop =     3'b101;
+                            end
+                        6'b001111:  // Load upper
+                            begin
+                                ALUop =     3'b010;
+                            end
+                    endcase                    
+                end
+                
+            6'b0001XX:  // Branch Instructions
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b1;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b1;
+                    regWrite =  1'b0;
+                    ALUop =     3'b111;
+                end
+            
+            //TODO Complete Load and Store instructions
+            6'b100XXX:  // Load Instructions
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b1;
+                    mem2Reg =   1'b1;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b1;
+                    regWrite =  1'b0;
+                    ALUop =     3'b111; 
+                end
+                
+            default:    
+                begin
+                    reg_dst =   1'b0;
+                    branch =    1'b0;
+                    memRead =   1'b0;
+                    mem2Reg =   1'b0;
+                    memWrite =  1'b0;
+                    ALUsrc =    1'b0;
+                    regWrite =  1'b1;
+                    ALUop =     3'b111;
+                end
+        endcase
+    end
 
 endmodule

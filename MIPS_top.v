@@ -83,6 +83,8 @@ control my_control(
         .signXtend(signXtend));
             
 instruction_memory my_ins_mem(.address(pc), .instruction(instruction));
+
+data_memory data_mem(.clk(clk), .address(ALUresult), .write_data(reg_file_out2), .read_data(read_data));
 endmodule
 
 

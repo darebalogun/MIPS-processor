@@ -46,7 +46,7 @@ always @(*)
                             ALUop =     3'b101;
                         6'b100111:   // NOR
                             ALUop =     3'b110;                     
-                        6'b001XXX:  // Jump
+                        6'b00100X:  // Jump
                             jump =      1'b1;
                             
                         default:

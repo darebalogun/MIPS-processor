@@ -71,9 +71,13 @@ module MIPS_tb;
         @(posedge clk);
         rst = 0;
         
-        $write("Register 0: %h \n", mips.my_reg_file.registers[0]);
         #2;
     end
-    always clk = #1 ~clk;
+    always
+        begin 
+            clk = #1 ~clk;
+            if (mips.my_reg_file.registers[2] == 32'd2971215073)
+                $stop;
+        end
 endmodule
 

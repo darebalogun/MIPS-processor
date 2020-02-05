@@ -10,6 +10,9 @@ module alu32(
     output reg [31:0] result,
     output zero);
 
+initial
+    result = 32'd0;
+
 assign zero = (result == 32'd0) ? 1'b1: 1'b0;
 
 always @(*)
@@ -29,6 +32,8 @@ always @(*)
                 result = op1 ^ op2;
             6'b110: // NOR
                 result = ~(op1 | op2);
+            default: // NOP
+                result = op1;
             endcase
     end
 

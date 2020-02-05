@@ -7,11 +7,11 @@ module data_memory(
    output [31:0] read_data,
    input write);
 
-reg [31:0] memory [1023:0];
+reg [7:0] memory [1023:0];
 
 assign read_data = {memory[address], memory[address + 1], memory[address + 2], memory[address + 3]}; //Verilog might allow or not
 
-always@(posedge clk)
+always@(negedge clk)
 begin
     if(write)
     begin

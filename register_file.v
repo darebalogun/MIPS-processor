@@ -22,7 +22,7 @@ initial
 assign read_data1 = registers[reg1_address]; 
 assign read_data2 = registers[reg2_address]; 
 
-always@(posedge clk)
+always@(negedge clk)
 begin
     if(write)
     begin

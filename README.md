@@ -1,5 +1,5 @@
 # MIPS-processor
-Verilog implementation of a MIPS processor. This project started out as a lab assignment for SYSC 4310 (Computer Systems Architecture) Fall 2019.
+Verilog implementation of a 32 bit MIPS processor. This project started out as a lab assignment for SYSC 4310 (Computer Systems Architecture) Fall 2019.
 I've built on the initial lab assignment and adding more funtionality and ISA support as time permits.
 
 ## Installation
@@ -27,6 +27,8 @@ _main:
       
       j _main
 ```
+Test bench terminates the program once we reach the largest unsigned 32 bit fibonacci number.
+
 ### Result
 The beginning of the simulation
 ![Fibonacci wave begin](docs/sim_begin.PNG)
